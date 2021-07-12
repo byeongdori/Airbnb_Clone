@@ -38,10 +38,11 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-PROJECT_APPS = [
-    "users.apps.UsersConfig"
-]
+THIRD_PARTY_APPS = []
 
+PROJECT_APPS = ["users.apps.UsersConfig"]
+
+# 기본 제공하는 DJANGO_APPS와 프로젝트 개발하면서 만든 PROJECT_APPS 분리
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
