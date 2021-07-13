@@ -11,13 +11,15 @@ Start 2021.07.04
      - --> PROJECT_APPS : 개발하면서 만드는 app
      - --> THIRD_PARTY_APPS : 외부에서 가져온 app, 라이브러리
  - models.py 변경시 makemigration -> migrate 
+ - app -> 웹 사이트 설계 시 웹 프로그램이 해야할 일을 적당한 크기로 모듈화 한 것
+ - 개발 시 어떤 app을 만들건지, app의 역할이 정확히 뭔지, app내의 models의 속성은 무엇이 필요한지 명확히 확인해야함
 
-1. Create/Modify Custom User Model
+1. Create/Modify Custom Model
  - Models.py -> 장고 데이터베이스에 들어갈 models 속성 정의
  - admin.py -> Models.py 바탕으로 사용자에게 보여질 admin 패널 관리
 
 2. core apps 
- - 다른 app들이 공통적으로 사용하는 models을 추상적으로 정의
+ - 다른 app들이 공통적으로 사용하는 models의 속성을 추상적으로 정의
  - 다른 app들이 상속받아 확장해서 사용
  - Meta class 이용해 추상클래스로 설정 
 

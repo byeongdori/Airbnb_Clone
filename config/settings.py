@@ -44,6 +44,10 @@ PROJECT_APPS = [
     "core.apps.CoreConfig",
     "users.apps.UsersConfig",
     "rooms.apps.RoomsConfig",
+    "reviews.apps.ReviewsConfig",
+    "reservations.apps.ReservationsConfig",
+    "lists.apps.ListsConfig",
+    "conversations.apps.ConversationsConfig",
 ]
 
 # 기본 제공하는 DJANGO_APPS와 프로젝트 개발하면서 만든 PROJECT_APPS 분리
