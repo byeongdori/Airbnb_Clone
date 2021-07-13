@@ -6,10 +6,10 @@ Start 2021.07.04
 
 0. 
  - app 생성시 config -> settings.py 가서 app 등록
-   -> INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
-    --> DJANGO_APPS : 기본 제공
-    --> PROJECT_APPS : 개발하면서 만드는 app
-    --> THIRD_PARTY_APPS : 외부에서 가져온 app, 라이브러리
+   - -> INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
+     - --> DJANGO_APPS : 기본 제공
+     - --> PROJECT_APPS : 개발하면서 만드는 app
+     - --> THIRD_PARTY_APPS : 외부에서 가져온 app, 라이브러리
  - models.py 변경시 makemigration -> migrate 
 
 1. Create/Modify Custom User Model
