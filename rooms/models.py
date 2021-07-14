@@ -93,6 +93,5 @@ class Room(core_models.AbstractTimeStampedModel):
     house_rules = models.ManyToManyField(HouseRule, blank=True)
 
     def __str__(self):
+        # str 함수 -> 페이지에서 models가 보여지는 이름 설정
         return self.name
-
-    # str 함수 -> 페이지에서 models가 보여지는 이름 설정
