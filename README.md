@@ -44,12 +44,12 @@ Start 2021.07.04
  - list_filter
  - ordering
  - search_fields
-  - 검색 방법은 prefix를 사용해 ^, =, @, None 네가지 방법으로 사용 가능
-  - ^ -> StartsWith // = -> iexact // @ -> search // None -> icontains
-  - ex) "=city" -> 정확한 도시 이름을 검색했을 때만 검색 결과 출력
+   - 검색 방법은 prefix를 사용해 ^, =, @, None 네가지 방법으로 사용 가능
+   - ^ -> StartsWith // = -> iexact // @ -> search // None -> icontains
+   - ex) "=city" -> 정확한 도시 이름을 검색했을 때만 검색 결과 출력
  - filter_horizontal
-  - filter_horizontal -> ManytoMany 관계에서 사용가능
-  - 특정 model 생성 시, model 내의 여러개의 다른 요소 추가 / 제거 시 유용 
+   - filter_horizontal -> ManytoMany 관계에서 사용가능
+   - 특정 model 생성 시, model 내의 여러개의 다른 요소 추가 / 제거 시 유용 
 
 2. Managers and QuerySets
  - python manage.py shell 명령 통해 장고 DB 객체들에 접근할수 있음
