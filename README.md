@@ -41,6 +41,7 @@ Start 2021.07.04
 1. admin.py 에서 사용할 수 있는 기능들
  - fieldsets
  - list_display
+  - models.py 에서 만든 함수를 요소로 집어넣을 수도 있음
  - list_filter
  - ordering
  - search_fields
@@ -53,5 +54,15 @@ Start 2021.07.04
 
 2. Managers and QuerySets
  - python manage.py shell 명령 통해 장고 DB 객체들에 접근할수 있음
- - 이때 접근하는 연결 다리가 Manager, 결과가 Queryset
+ - 파이썬 코드로도 접근 가능, 다른 models 참조하는 기능 요구하는 함수 작성 시 유용하게 사용 (ex. rooms -> admin.py 에 있음)
+ - 접근하는 연결 다리가 Manager, 결과가 Queryset
  - Queryset -> Object 리스트 (데이터베이스로 부터 온 장고 리스트)
+ - Queryset에 관한 장고 설명
+   - https://docs.djangoproject.com/en/3.2/ref/models/querysets/
+ - related_name -> 대상을 위한 속성
+   - ex) amenities에 related_name = "rooms" 설정 시
+         amenities.room_sets.all() -> amenities.rooms.all()로 사용
+   - migrate 작업 해줘야함!
+
+3. admin에게만 필요한 기능 -> admin.py에 함수 추가
+   실 사용자에게도 보여지는 기능 -> models.py에 함수 추가

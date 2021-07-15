@@ -6,7 +6,7 @@ from . import models
 # 작업한 models.py를 직접적으로 웹에 보여지게 하는 파일
 
 # Register your models here.
-@admin.register(models.User)       # models.py에 있는 User Model 등록, 아래 Class 정의와 한쌍
+@admin.register(models.User)  # models.py에 있는 User Model 등록, 아래 Class 정의와 한쌍
 class CustomUserAdmin(UserAdmin):
 
     """Custom User Admin"""
@@ -32,14 +32,17 @@ class CustomUserAdmin(UserAdmin):
     # 리스트 목록 보여줄 때 함께 보여줄 속성들 설정
     list_display = (
         "username",
-        "gender",
+        "first_name",
+        "last_name",
+        "email",
+        "is_active",
         "language",
         "currency",
         "superhost",
+        "is_staff",
+        "is_superuser",
     )
+
     # 리스트들을 특정 속성들로 필터링해서 보고 싶을 때 설정
-    list_filter = (
-        "language",
-        "currency",
-        "superhost",
-    )
+    list_filter = UserAdmin.list_filter + ("superhost",)
+    

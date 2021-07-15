@@ -9,7 +9,13 @@ class ItemAdmin(admin.ModelAdmin):
 
     """Item Admin Definition"""
 
-    pass
+    list_display = (
+        "name",
+        "used_by",
+    )
+
+    def used_by(self, object):
+        return object.rooms.count()
 
 
 @admin.register(models.Room)
@@ -44,6 +50,8 @@ class RoomAdmin(admin.ModelAdmin):
         "check_out",
         "instant_book",
         "count_amenities",
+        "count_photos",
+        "total_rating",
     )
 
     ordering = ("name", "price")
@@ -78,6 +86,9 @@ class RoomAdmin(admin.ModelAdmin):
         # object -> 현재 Row
         # list_display에 함수 이름을 추가하는 방식으로 사용 가능
         return object.amenities.count()
+
+    def count_photos(self, object):
+        return object.photos.count()
 
 
 @admin.register(models.Photo)
