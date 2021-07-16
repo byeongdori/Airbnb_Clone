@@ -66,3 +66,8 @@ Start 2021.07.04
 
 3. admin에게만 필요한 기능 -> admin.py에 함수 추가
    실 사용자에게도 보여지는 기능 -> models.py에 함수 추가
+
+4. 업로드 파일 관리 
+   - MEDIA_ROOT -> 장고 프로젝트 파일 내에 미디어(사진, 영상..) 파일들이 어디에 저장될지 설정하는 변수
+   - 또한 models.py에서 models.ImageField() 함수에서 upload_to 매개변수 사용하여 더 세세하게 구분 가능  
+     (ex. file = models.ImageField(upload_to="room_photos")) -> MEDIA_ROOT 설정 된 폴더 내에 room_photos 라는 하위 폴더 만들어 거기에 저장)

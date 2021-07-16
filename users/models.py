@@ -26,7 +26,7 @@ class User(AbstractUser):  # AbstaractUser가 제공하는 속성 + 아래 속�
     CURRENCY_KRW = "krw"
     CURRENCY_CHOICES = ((CURRNECY_USD, "USD"), (CURRENCY_KRW, "KRW"))
 
-    avatar = models.ImageField(blank=True)
+    avatar = models.ImageField(upload_to="avatars", blank=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=10, blank=True)
     bio = models.TextField(default="", blank=True)
     birthdate = models.DateField(null=True)

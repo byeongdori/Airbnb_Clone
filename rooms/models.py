@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models.deletion import SET_NULL
 from django_countries.fields import CountryField
 from core import models as core_models
-from users import models as user_models
 
 # Create your models here.
 
@@ -59,7 +58,7 @@ class Photo(core_models.AbstractTimeStampedModel):
     """Photo Model Definition"""
 
     caption = models.CharField(max_length=80)
-    file = models.ImageField()
+    file = models.ImageField(upload_to="room_photos")
     room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)
 
     def __str__(self):
@@ -85,7 +84,7 @@ class Room(core_models.AbstractTimeStampedModel):
     instant_book = models.BooleanField(default=False)
 
     host = models.ForeignKey(
-        user_models.User, related_name="rooms", on_delete=models.CASCADE
+        "users.User", related_name="rooms", on_delete=models.CASCADE
     )
     # ForeignKey 이용하여 User model 과 연결, 일대다 관계
     # on_delete=models.CASCADE -> room 과 연결된 User가 삭제되면, room도 같이 삭제해라
