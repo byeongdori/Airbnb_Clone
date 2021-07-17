@@ -77,10 +77,16 @@ Start 2021.07.04
    - migrate 작업 해줘야함!
 
 4. 업로드 파일 관리 
-   - MEDIA_ROOT -> 장고 프로젝트 파일 내에 미디어(사진, 영상..) 파일들이 어디에 저장될지 설정하는 변수
-   - 또한 models.py에서 models.ImageField() 함수에서 upload_to 매개변수 사용하여 더 세세하게 구분 가능  
-     (ex. file = models.ImageField(upload_to="room_photos")) -> MEDIA_ROOT 설정 된 폴더 내에 room_photos 라는 하위 폴더 만들어 거기에 저장)
-   - MEDIA_URL -> 웹 상에서 미디어 파일들의 URL을 설정하는 변수  
-     (ex. MEDIA_URL = "/media/"로 설정 후 uploads/room_photos/testimage.jpg 열면 ->  -> /media/room_photos/temsimage.jpg로 열림
-   - 위에 있는 MEDIA 관련 두 변수 설정 후, urls.py에서 실제 파일&폴더 위치와 파일 URL을 연결해야 웹에서 파일이 보임!
-     - 이때 개발 단계 & 라이브 서버인지 구분해서 파일 보이는 방법 설정해야함
+  - MEDIA_ROOT -> 장고 프로젝트 파일 내에 미디어(사진, 영상..) 파일들이 어디에 저장될지 설정하는 변수
+  - 또한 models.py에서 models.ImageField() 함수에서 upload_to 매개변수 사용하여 더 세세하게 구분 가능  
+  (ex. file = models.ImageField(upload_to="room_photos")) ->  MEDIA_ROOT 설정 된 폴더 내에 room_photos 라는 하위 폴더 만들어 거기에 저장)
+  - MEDIA_URL -> 웹 상에서 미디어 파일들의 URL을 설정하는 변수  
+    (ex. MEDIA_URL = "/media/"로 설정 후 uploads/room_photos/testimage.jpg 열면 ->  -> /media/room_photos/temsimage.jpg로 열림
+  - 위에 있는 MEDIA 관련 두 변수 설정 후, urls.py에서 실제 파일&폴더의 위치와 파일 URL을 연결해야 웹에서 파일이 보임!
+    - 이때 개발 단계 & 라이브 서버인지 구분해서 파일 보이는 방법 설정해야함
+
+5. save() / delete() 함수와 super()
+  - model 저장 시, 장고 내에 있는 부모 클래스에서 save() 함수 호출하여 저장함
+  - super() 메소드 통해 장고 내에 있는 부모 클래스 참조하여 save() 함수 오버라이딩(Overriding) 가능
+  - save() -> model이 저장되는 모든 시점에 동작  
+    admin_save() -> admin 패널에서 저장 시에만 동작, 누가 저장했는지 확인 가능

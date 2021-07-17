@@ -97,6 +97,11 @@ class Room(core_models.AbstractTimeStampedModel):
         # str 함수 -> 페이지에서 models가 보여지는 이름 설정
         return self.name
 
+    # 이 save 메소드는 어드민에서 모델 건드릴 때 뿐만 아니라, 어딘가에서 건드릴 때 항상 일어남!
+    def save(self, *args, **kwargs):
+        self.city = str.capitalize(self.city)
+        super().save(*args, **kwargs) # Call the real save() method    
+
     def total_rating(self):
         all_reviews = self.reviews.all()
         all_ratings = 0

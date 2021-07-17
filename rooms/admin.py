@@ -34,7 +34,7 @@ class RoomAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Basic Info",
-            {"fields": ("name", "description", "country", "address", "price")},
+            {"fields": ("name", "description", "country", "city", "address", "price")},
         ),
         ("Times", {"fields": ("check_in", "check_out", "instant_book")}),
         (
@@ -90,6 +90,11 @@ class RoomAdmin(admin.ModelAdmin):
     )
     # filter_horizontal -> ManytoMany 관계에서 사용가능
     # 특정 model 생성 시, model 내의 여러개의 다른 요소 추가 / 제거 시 유용
+
+    # admin에서 저장할 때에만 함수 호출
+    def save_model(self, request, obj, form, change):
+        print(obj, change, form)
+        super().save_model(request, obj, form, change)
 
     def count_amenities(self, object):
         # self -> 현재 속한 클래스 (RoomAdmin)
