@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
 from . import models
 
 # Register your models here.
@@ -18,10 +19,17 @@ class ItemAdmin(admin.ModelAdmin):
         return object.rooms.count()
 
 
+class PhotoInline(admin.TabularInline):
+
+    model = models.Photo
+
+
 @admin.register(models.Room)
 class RoomAdmin(admin.ModelAdmin):
 
     """Room Admin Definition"""
+
+    inlines = (PhotoInline,)
 
     fieldsets = (
         (
@@ -68,6 +76,8 @@ class RoomAdmin(admin.ModelAdmin):
         "house_rules",
     )
 
+    raw_id_fields = ("host",)
+
     search_fields = ["city", "host__username"]
     # 검색 방법은 prefix를 사용해 ^, =, @, None 네가지 방법으로 사용 가능
     # ^ -> StartsWith // = -> iexact // @ -> search // None -> icontains
@@ -96,4 +106,15 @@ class PhotoAdmin(admin.ModelAdmin):
 
     """Photo Admin Definition"""
 
-    pass
+    list_display = (
+        "__str__",
+        "get_thumbnail",
+    )
+
+    # mark_safe -> 장고는 보안상의 이유로 html 코드를 허용하지 않음
+    # 안전한 코드에 한해, mark_safe 사용하여 예외 처리
+    # from django.utils.html import mark_safe 해야함
+    def get_thumbnail(self, object):
+        return mark_safe(f'<img width="50px" src="{object.file.url}" />')
+
+    get_thumbnail.short_description = "Thumbnail"

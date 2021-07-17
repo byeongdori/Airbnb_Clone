@@ -25,6 +25,7 @@ SECRET_KEY = "django-insecure-0s4@q9wt4$zzfxp0gbp+3$7)ix(k8ne%^z^5we+_bivyurx48y
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# 서버가 라이브 상태일때는 False로 바꿔야함, 그러면 노란색 오류페이지 안나오고 404 오류만 뜸
 
 ALLOWED_HOSTS = []
 
@@ -143,3 +144,6 @@ AUTH_USER_MODEL = "users.User"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 # import os 해야함!
+MEDIA_URL = "/media/"
+# 실제 MEDIA 파일의 웹 상 URL 설정
+# 앞에있는 /은 절대경로로 만들어줌, 반드시 / 로 끝나야함!

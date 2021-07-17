@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
+# config 폴더 내 import 할때는 위와같은 형식으로!
 
 urlpatterns = [
     path("admin/", admin.site.urls),
 ]
+
+# 실제 미디어 파일 저장 위치와, 파일 URL을 연결해 웹에서 파일 보여지게 하는 방법
+# 개발 단계에서만 사용(DEBUE = TRUE), 라이브 서버에서는 절대 X
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

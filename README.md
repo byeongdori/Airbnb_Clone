@@ -38,12 +38,17 @@ Start 2021.07.04
 
 ## admin.py
 
+0. admin에게만 필요한 기능 -> admin.py에 함수 추가
+   실 사용자에게도 보여지는 기능 -> models.py에 함수 추가
+
 1. admin.py 에서 사용할 수 있는 기능들
  - fieldsets
  - list_display
-  - models.py 에서 만든 함수를 요소로 집어넣을 수도 있음
+   - models.py 에서 만든 함수를 요소로 집어넣을 수도 있음
  - list_filter
  - ordering
+ - raw_id_fields
+   - 리스트에 선택지가 다수일 때, 특정 id로 검색해 선택하는 방법 제공
  - search_fields
    - 검색 방법은 prefix를 사용해 ^, =, @, None 네가지 방법으로 사용 가능
    - ^ -> StartsWith // = -> iexact // @ -> search // None -> icontains
@@ -51,8 +56,15 @@ Start 2021.07.04
  - filter_horizontal
    - filter_horizontal -> ManytoMany 관계에서 사용가능
    - 특정 model 생성 시, model 내의 여러개의 다른 요소 추가 / 제거 시 유용 
+  
+2. Inline admin
+ - 한 admin.py 안에 다른 app의 admin을 넣을 때 사용
+ - 먼저 넣어야할 model의 Inline 클래스를 만들고, (ex. PhotoInline)  
+   목적지 admin.py에 inline 변수 생성 후 할당 (ex. inline = (PhotoInline, ))
+ - admin 페이지에서 볼 땐 TabularInline / StackedInline 두 가지 형식 사용가능
+ - rooms -> admin.py에 예시 있음
 
-2. Managers and QuerySets
+3. Managers and QuerySets
  - python manage.py shell 명령 통해 장고 DB 객체들에 접근할수 있음
  - 파이썬 코드로도 접근 가능, 다른 models 참조하는 기능 요구하는 함수 작성 시 유용하게 사용 (ex. rooms -> admin.py 에 있음)
  - 접근하는 연결 다리가 Manager, 결과가 Queryset
@@ -64,10 +76,11 @@ Start 2021.07.04
          amenities.room_sets.all() -> amenities.rooms.all()로 사용
    - migrate 작업 해줘야함!
 
-3. admin에게만 필요한 기능 -> admin.py에 함수 추가
-   실 사용자에게도 보여지는 기능 -> models.py에 함수 추가
-
 4. 업로드 파일 관리 
    - MEDIA_ROOT -> 장고 프로젝트 파일 내에 미디어(사진, 영상..) 파일들이 어디에 저장될지 설정하는 변수
    - 또한 models.py에서 models.ImageField() 함수에서 upload_to 매개변수 사용하여 더 세세하게 구분 가능  
      (ex. file = models.ImageField(upload_to="room_photos")) -> MEDIA_ROOT 설정 된 폴더 내에 room_photos 라는 하위 폴더 만들어 거기에 저장)
+   - MEDIA_URL -> 웹 상에서 미디어 파일들의 URL을 설정하는 변수  
+     (ex. MEDIA_URL = "/media/"로 설정 후 uploads/room_photos/testimage.jpg 열면 ->  -> /media/room_photos/temsimage.jpg로 열림
+   - 위에 있는 MEDIA 관련 두 변수 설정 후, urls.py에서 실제 파일&폴더 위치와 파일 URL을 연결해야 웹에서 파일이 보임!
+     - 이때 개발 단계 & 라이브 서버인지 구분해서 파일 보이는 방법 설정해야함
