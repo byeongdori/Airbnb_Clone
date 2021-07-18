@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.base import ModelState
-
 # 장고 데이터베이스에 들어갈 model을 정의하는 파일 / 수정시 makemigration -> migrate 해야함!
 
 # Create your models here.

@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models.deletion import SET_NULL
 from django_countries.fields import CountryField
 from core import models as core_models
-
 # Create your models here.
 
 

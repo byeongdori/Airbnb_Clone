@@ -90,3 +90,14 @@ Start 2021.07.04
   - super() 메소드 통해 장고 내에 있는 부모 클래스 참조하여 save() 함수 오버라이딩(Overriding) 가능
   - save() -> model이 저장되는 모든 시점에 동작  
     admin_save() -> admin 패널에서 저장 시에만 동작, 누가 저장했는지 확인 가능
+
+6. 사용자 지정 명령어
+  - 사용자가 명령을 만들어 python manage.py <사용자 명령> 형식으로 사용 가능
+  - 많은 데이터를 한꺼번에 생성하는 명령 만드는데에 유용
+    - 손쉽게 데이터를 만들기 위한 장고 시드 활용시  
+      pipenv install djnago_seed / config -> setting.py 서드파티 앱 추가
+  - 사용자 지정 명령어는 어떤 app에서 필요한 명령어 인지 따라 django app 내에 구분  
+    app내에 management 폴더 만들고 __init__.py와 commands 폴더 생성  
+    commands 폴더 내에 __init__.py 와 명령어.py 파일 생성
+  - 명령어.py 내에는 Command 클래스 만들어 명령어 호출 시 동작 설정  
+    (ex. room app 내에 seed_amenities.py -> 호출은 python manage.py seed_amenities)
