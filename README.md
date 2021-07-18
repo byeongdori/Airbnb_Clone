@@ -91,11 +91,12 @@ Start 2021.07.04
   - save() -> model이 저장되는 모든 시점에 동작  
     admin_save() -> admin 패널에서 저장 시에만 동작, 누가 저장했는지 확인 가능
 
-6. 사용자 지정 명령어
+6. 사용자 지정 명령어 / Django_seed 활용해서 손 쉽게 테스트 데이터 넣기
   - 사용자가 명령을 만들어 python manage.py <사용자 명령> 형식으로 사용 가능
   - 많은 데이터를 한꺼번에 생성하는 명령 만드는데에 유용
     - 손쉽게 데이터를 만들기 위한 장고 시드 활용시  
-      pipenv install djnago_seed / config -> setting.py 서드파티 앱 추가
+      pipenv install django_seed / config -> setting.py 서드파티 앱 추가
+    - django_seed 활용법 -> rooms app 내에 seed_rooms.py 파일 참고
   - 사용자 지정 명령어는 어떤 app에서 필요한 명령어 인지 따라 django app 내에 구분  
     app내에 management 폴더 만들고 __init__.py와 commands 폴더 생성  
     commands 폴더 내에 __init__.py 와 명령어.py 파일 생성
