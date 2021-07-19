@@ -34,7 +34,7 @@ class Reservation(core_models.AbstractTimeStampedModel):
 
     def in_progress(self):
         now = timezone.now().date()
-        return now > self.check_in and now < self.check_out
+        return now >= self.check_in and now <= self.check_out
 
     # boolean으로 해놓지 않으면 admin 패널에서 체크, X 표시로 안나옴!
     in_progress.boolean = True

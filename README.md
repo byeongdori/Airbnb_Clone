@@ -101,4 +101,4 @@ Start 2021.07.04
     app내에 management 폴더 만들고 __init__.py와 commands 폴더 생성  
     commands 폴더 내에 __init__.py 와 명령어.py 파일 생성
   - 명령어.py 내에는 Command 클래스 만들어 명령어 호출 시 동작 설정  
-    (ex. room app 내에 seed_amenities.py -> 호출은 python manage.py seed_amenities)
+    (ex. room app 내에 seed_rooms.py -> 호출은 python manage.py seed_rooms)
