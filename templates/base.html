@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block page_name %}{% endblock page_name %} | Nbnb</title>
+</head>
+<body>
+    
+    <!-- 작게 나누어서 include로 기능 삽입! (Divide and Conquer) -->
+    {% include "partials/header.html" %}
+    <!-- content라는 이름은 가진 블럭 생성, 타 html 에서 block 통해서 참조 -->
+    {% block content %}
+    {% endblock %}
+    
+    {% include "partials/footer.html" %}
+
+    &copy; Nbnb
+</body>
+</html>

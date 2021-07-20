@@ -102,3 +102,25 @@ Start 2021.07.04
     commands 폴더 내에 __init__.py 와 명령어.py 파일 생성
   - 명령어.py 내에는 Command 클래스 만들어 명령어 호출 시 동작 설정  
     (ex. room app 내에 seed_rooms.py -> 호출은 python manage.py seed_rooms)
+
+## urls.py & views.py & Html(templates)
+
+0. Url(주소) - View(뷰, 함수들) - Html(템플릿)식으로 연결
+
+1. Url
+ - urls은 앱 별로 앱 폴더 내에 urls.py 만들어 정리하기 (Divide and Conquer)
+  - 최종적으로 config -> urls.py에 각 앱으로 가는 url 경로 모아두기
+ - urls.py 내에 urlpatterns 변수가 url 관리 -> url과 view 연결?
+ - 어떤 앱 내에서 쓰이는 기능을 표현하는 url인지 네이밍 잘 해서 정리
+
+2. View
+ - request - Httpresponce
+ - render 함수 -> view와 html 이어주는 다리
+
+3. Html 파일 
+ - html 파일은 Templates 폴더 새로 생성해서 관리
+   - html 파일은 최대한 작게 기능, 부분별로 나누기 (Divide and Conquer)
+   - config -> settings.py 에 생성한 Templates 폴더 위치 알려줘야함!
+ - 공통적으로 쓰이는 구조가 있는 경우, 모든 템플릿의 기본이 되는 템플릿(부모 템플릿) 생성해서 자식 템플릿에서 확장 (ex. base.html)
+ - block - 자식 템플릿이 부모 템플릿에게 content 집어넣을수 있는 도구
+ - include - 한 템플릿 안에 다른 템플릿 집어넣을수 있는 도구

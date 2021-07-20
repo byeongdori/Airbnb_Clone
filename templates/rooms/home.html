@@ -1,0 +1,14 @@
+<!--모든 템플릿이 같은 폴더에 있다고 생각하고 참조 "..base.html" 아님!! -->
+{% extends "base.html" %}
+
+{% block page_name %}
+    Home
+{% endblock page_name %}
+{% block content %}
+
+    {% for room in rooms %}
+    <h1>{{room.name}} / $ {{room.price}}</h1>
+    {% endfor %}
+
+{% endblock content %}
+
