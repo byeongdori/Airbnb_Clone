@@ -1,9 +1,9 @@
 {
-    "python.pythonPath": "C:\\Users\\well\\.virtualenvs\\Airbnb-CloneCoding-P7ROsQS6\\Scripts\\python.exe",
-    "python.linting.flake8Enabled": true,
-    "python.linting.enabled": true,
-    "python.formatting.provider": "black",
-    "python.linting.flake8Args": [
-        "--max-line-length==88"
-    ]
+  "python.pythonPath": "C:\\Users\\well\\.virtualenvs\\Airbnb-CloneCoding-P7ROsQS6\\Scripts\\python.exe",
+  "python.linting.flake8Enabled": true,
+  "python.linting.enabled": true,
+  "python.formatting.provider": "black",
+  "python.linting.flake8Args": ["--max-line-length==88"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }
