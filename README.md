@@ -140,5 +140,5 @@ Start 2021.07.04
 - include - 한 템플릿 안에 다른 템플릿 집어넣을수 있는 도구
 - template tag 사용해서 html 파일에서 논리적 연산 수행 가능
   - template tag 장고 설명 문서 -> https://docs.djangoproject.com/en/3.2/ref/templates/builtins/
-- 장고 Paginator -> 페이지 구성을 더 쉽게 할 수 있도록 도와줌  
+- 장고 Paginator -> view.py와 html 파일 코딩을 더 쉽게 할 수 있도록 도와주는 객체  
   (ex. rooms -> view.py 와 template -> rooms -> home.html 참고)
