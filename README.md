@@ -125,10 +125,15 @@ Start 2021.07.04
 - urls.py 내에 urlpatterns 변수가 url 관리 -> url과 view 연결?
 - 어떤 앱 내에서 쓰이는 기능을 표현하는 url인지 네이밍 잘 해서 정리
 
-2. View
+2. Class Based View(List View) vs Function Based View
 
-- request - Httpresponce
-- render 함수 -> view와 html 이어주는 다리
+- Class Based View(List View)
+  - View Class 생성하여 속성값을 대입하는 형식으로 View를 구성하는 방법
+  - Paginator, context 관리 등 다양한 기능 지원
+- Function Based View
+  - 함수를 생성하여 request 객체와 Httpresponce, render, redirect 등 함수와 리턴값을 기반으로 View를 구성하는 방법
+  - 장고 Paginator -> 페이지 구성을 더 쉽게 할 수 있도록 도와주는 객체  
+  (ex. rooms -> view.py 와 template -> rooms -> room_list.html 참고)
 
 3. Html 파일
 
@@ -138,7 +143,3 @@ Start 2021.07.04
 - 공통적으로 쓰이는 구조가 있는 경우, 모든 템플릿의 기본이 되는 템플릿(부모 템플릿) 생성해서 자식 템플릿에서 확장 (ex. base.html)
 - block - 자식 템플릿이 부모 템플릿에게 content 집어넣을수 있는 도구
 - include - 한 템플릿 안에 다른 템플릿 집어넣을수 있는 도구
-- template tag 사용해서 html 파일에서 논리적 연산 수행 가능
-  - template tag 장고 설명 문서 -> https://docs.djangoproject.com/en/3.2/ref/templates/builtins/
-- 장고 Paginator -> view.py와 html 파일 코딩을 더 쉽게 할 수 있도록 도와주는 객체  
-  (ex. rooms -> view.py 와 template -> rooms -> home.html 참고)

@@ -1,0 +1,84 @@
+<!--모든 템플릿이 같은 폴더에 있다고 생각하고 참조 "..base.html" 아님!! -->
+{% extends "base.html" %} 
+{% block page_name %} Home {% endblock page_name %} 
+
+{% block content %} 
+
+<!-- Class Based View(ListView) 사용 - 최종적으로 쉽게 사용하는 코딩 방법 -->
+{{now}}
+
+{% for room in rooms %}
+
+<h1>{{room.name}} / $ {{room.price}}</h1>
+
+{% endfor %}
+<!-- page_obj로 Paginator 없이 페이지 객체 가져올 수 있음 -->
+{% if page_obj.has_previous %}
+
+  <a href="?page={{page_obj.previous_page_number}}"> Previous </a>
+
+  {% endif %} 
+  
+  Page {{page_obj.number}} of {{page_obj.paginator.num_pages}} 
+
+  {% if page_obj.has_next %}
+
+  <a href="?page={{page_obj.next_page_number}}"> Next </a>
+
+  {% endif %}
+
+
+<!-- Paginator 사용 - 중간 단계에서의 코딩 -->
+<!--
+  {% for room in page %}
+
+  <h1>{{room.name}} / $ {{room.price}}</h1>
+
+  {% endfor %}
+
+  {% if page.has_previous %}
+
+  <a href="?page={{page.previous_page_number}}"> Previous </a>
+
+  {% endif %} 
+  
+  Page {{page.number}} of {{page.paginator.num_pages}} 
+
+  {% if page.has_next %}
+
+  <a href="?page={{page.next_page_number}}"> Next </a>
+
+  {% endif %}
+-->
+
+<!-- 아래는 paginator 사용하지 않고 쓴 코드 -->
+<!-- template tag 사용해서 html 파일에서 논리적 연산 수행 가능(ex. add..)
+     template tag 장고 설명 문서 
+     -> https://docs.djangoproject.com/en/3.2/ref/templates/builtins/
+-->
+<!--
+<h5>
+  {% for room in rooms %}
+
+  <h1>{{room.name}} / $ {{room.price}}</h1>
+  
+  {% endfor %}
+
+  {% if page != 1 %}
+
+  <a href="?page={{page | add:-1}}"> Previous </a>
+
+  {% endif %} 
+  
+  Page {{page}} of {{page_count}} 
+
+  {% if page != page_count %}
+
+  <a href="?page={{page | add:1}}"> Next </a>
+
+  {% endif %}
+</h5>
+-->
+
+
+{% endblock content %}
