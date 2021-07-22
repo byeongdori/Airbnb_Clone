@@ -133,7 +133,7 @@ Start 2021.07.04
 - Function Based View
   - 함수를 생성하여 request 객체와 Httpresponce, render, redirect 등 함수와 리턴값을 기반으로 View를 구성하는 방법
   - 장고 Paginator -> 페이지 구성을 더 쉽게 할 수 있도록 도와주는 객체  
-  (ex. rooms -> view.py 와 template -> rooms -> room_list.html 참고)
+    (ex. rooms -> view.py 와 template -> rooms -> room_list.html 참고)
 
 3. Html 파일
 
@@ -143,3 +143,7 @@ Start 2021.07.04
 - 공통적으로 쓰이는 구조가 있는 경우, 모든 템플릿의 기본이 되는 템플릿(부모 템플릿) 생성해서 자식 템플릿에서 확장 (ex. base.html)
 - block - 자식 템플릿이 부모 템플릿에게 content 집어넣을수 있는 도구
 - include - 한 템플릿 안에 다른 템플릿 집어넣을수 있는 도구
+
+4. Url Tag
+
+- url tag , app_name , namespace 활용

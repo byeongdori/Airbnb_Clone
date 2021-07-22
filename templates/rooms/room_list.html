@@ -9,7 +9,12 @@
 
 {% for room in rooms %}
 
-<h1>{{room.name}} / $ {{room.price}}</h1>
+<h4>
+  <!-- url tag 사용 -->
+  <a href = "{% url 'rooms:detail' room.pk %}">
+    {{room.name}} / $ {{room.price}}
+  </a>
+</h4>
 
 {% endfor %}
 <!-- page_obj로 Paginator 없이 페이지 객체 가져올 수 있음 -->

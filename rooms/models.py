@@ -1,6 +1,6 @@
 from enum import Flag
 from django.db import models
-from django.db.models.deletion import SET_NULL
+from django.urls import reverse
 from django_countries.fields import CountryField
 from core import models as core_models
 # Create your models here.
@@ -100,6 +100,10 @@ class Room(core_models.AbstractTimeStampedModel):
     def save(self, *args, **kwargs):
         self.city = str.capitalize(self.city)
         super().save(*args, **kwargs) # Call the real save() method    
+    
+    # Url 추적해주는 함수
+    def get_absolute_url(self):
+        return reverse("rooms:detail", kwargs={"pk" : self.pk})
 
     def total_rating(self):
         all_reviews = self.reviews.all()
