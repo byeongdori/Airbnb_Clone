@@ -1,5 +1,7 @@
+from django.urls.base import reverse
+from django.http import Http404
 from django.utils import timezone
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.shortcuts import render, redirect
 from django.core.paginator import EmptyPage, Paginator
 from . import models
@@ -7,12 +9,14 @@ from . import models
 # Create your views here.
     # Class Based View(ListView) 사용 - 최종적으로 쉽게 사용하는 코딩 방법
 
+# Class Based View
 class HomeView(ListView):
     
     """ Home View Definition """
 
     # 단순 속성에 값을 대입하는 것만으로 페이지 설정 가능
-    model = models.Room
+    # html 파일에서 room 혹은 object라는 이름으로 받아온 model 참조 가능
+    model = models.Room 
 
     # 한 페이지에 몇개 보여줄꺼냐
     paginate_by = 10
@@ -36,10 +40,28 @@ class HomeView(ListView):
         context["now"] = now
         return context
 
+class RoomDetail(DetailView):
+
+    """ Room Detail Definition """
+    model = models.Room
+
+    # url에서 pk를 찾고자 할 때 키워드 
+    # 기본적으로 pk로 설정되어 있음, 바꾸고 싶을 때 변경
+    pk_url_kwarg ="pk"
+
+
+# Function Based View
+"""
 def room_detail(request, pk):
-
-    return render(request, "rooms/detail.html")
-
+    try:
+        room = models.Room.objects.get(pk=pk)
+        return render(request, "rooms/room_detail.html", {"room": room})
+    except models.Room.DoesNotExist:
+        # reverse 함수 -> urls.py에서 정의한 url pattern의 name에 매칭되는 url로 돌아감!
+        return redirect(reverse("core:home"))
+        # 404 page를 띄워줄 수도 있음! , 404.html 만들어서 커스텀도 가능
+        # raise Http404()
+"""
 
 """
     # paginator - 중간 단계에서의 코딩(Function Based View)

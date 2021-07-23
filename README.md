@@ -122,14 +122,18 @@ Start 2021.07.04
 
 - urls은 앱 별로 앱 폴더 내에 urls.py 만들어 정리하기 (Divide and Conquer)
 - 최종적으로 config -> urls.py에 각 앱으로 가는 url 경로 모아두기
-- urls.py 내에 urlpatterns 변수가 url 관리 -> url과 view 연결?
 - 어떤 앱 내에서 쓰이는 기능을 표현하는 url인지 네이밍 잘 해서 정리
+- urls.py 내에 urlpatterns 변수가 url 관리 및 연결된 View에 있는 함수 호출
+- url tag , app_name , namespace 통한 참조
 
 2. Class Based View(List View) vs Function Based View
 
 - Class Based View(List View)
   - View Class 생성하여 속성값을 대입하는 형식으로 View를 구성하는 방법
+  - View의 이름과 html 파일의 이름 맞춰줘야함!  
+    (ex. rooms app의 ListView를 구성한다면, room_list.html로 파일 생성!)
   - Paginator, context 관리 등 다양한 기능 지원
+  - https://ccbv.co.uk/ -> CBV에 대해 다양한 설명 나와있는 사이트
 - Function Based View
   - 함수를 생성하여 request 객체와 Httpresponce, render, redirect 등 함수와 리턴값을 기반으로 View를 구성하는 방법
   - 장고 Paginator -> 페이지 구성을 더 쉽게 할 수 있도록 도와주는 객체  
@@ -143,7 +147,3 @@ Start 2021.07.04
 - 공통적으로 쓰이는 구조가 있는 경우, 모든 템플릿의 기본이 되는 템플릿(부모 템플릿) 생성해서 자식 템플릿에서 확장 (ex. base.html)
 - block - 자식 템플릿이 부모 템플릿에게 content 집어넣을수 있는 도구
 - include - 한 템플릿 안에 다른 템플릿 집어넣을수 있는 도구
-
-4. Url Tag
-
-- url tag , app_name , namespace 활용
