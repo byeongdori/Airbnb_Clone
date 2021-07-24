@@ -4,19 +4,20 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, redirect
 from django.core.paginator import EmptyPage, Paginator
+from django_countries import countries
 from . import models
 
 # Create your views here.
-    # Class Based View(ListView) 사용 - 최종적으로 쉽게 사용하는 코딩 방법
+# Class Based View(ListView) 사용 - 최종적으로 쉽게 사용하는 코딩 방법
 
 # Class Based View
 class HomeView(ListView):
-    
-    """ Home View Definition """
+
+    """Home View Definition"""
 
     # 단순 속성에 값을 대입하는 것만으로 페이지 설정 가능
     # html 파일에서 room 혹은 object라는 이름으로 받아온 model 참조 가능
-    model = models.Room 
+    model = models.Room
 
     # 한 페이지에 몇개 보여줄꺼냐
     paginate_by = 10
@@ -40,14 +41,24 @@ class HomeView(ListView):
         context["now"] = now
         return context
 
+
 class RoomDetail(DetailView):
 
-    """ Room Detail Definition """
+    """Room Detail Definition"""
+
     model = models.Room
 
-    # url에서 pk를 찾고자 할 때 키워드 
+    # url에서 pk를 찾고자 할 때 키워드
     # 기본적으로 pk로 설정되어 있음, 바꾸고 싶을 때 변경
-    pk_url_kwarg ="pk"
+    pk_url_kwarg = "pk"
+
+
+def search(request):
+    city = (request.GET.get("city") or "Anywhere")
+    city = str.capitalize(city)
+    print(city)
+    room_types = models.RoomType.objects.all()
+    return render(request, "rooms/search.html", {"city": city, "countries": countries, "room_types": room_types})
 
 
 # Function Based View
