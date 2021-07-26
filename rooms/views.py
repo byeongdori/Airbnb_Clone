@@ -1,3 +1,4 @@
+from django.db.models.base import ModelState
 from django.urls.base import reverse
 from django.http import Http404
 from django.utils import timezone
@@ -6,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import EmptyPage, Paginator
 from django_countries import countries
 from . import models
+from . import forms
 
 # Create your views here.
 # Class Based View(ListView) 사용 - 최종적으로 쉽게 사용하는 코딩 방법
@@ -54,6 +56,14 @@ class RoomDetail(DetailView):
 
 
 def search(request):
+
+    # Django Form 사용
+    form = forms.SearchForm()
+
+    return render(request, "rooms/search.html", {"form": form})
+
+    # Django Form 사용 안하고 만든 방법
+    """
     city = request.GET.get("city") or "Anywhere"
     city = str.capitalize(city)
     country = request.GET.get("country", "KR")
@@ -63,8 +73,8 @@ def search(request):
     bedrooms = int(request.GET.get("bedrooms", 0))
     beds = int(request.GET.get("beds", 0))
     baths = int(request.GET.get("baths", 0))
-    instant = request.GET.get("instant", False)
-    super_host = request.GET.get("super_host", False)
+    instant = bool(request.GET.get("instant", False))
+    super_host = bool(request.GET.get("super_host", False))
     # 여러개를 선택한 걸 가져올 땐 getlist!
     selected_amenities = request.GET.getlist("amenities")
     selected_facilities = request.GET.getlist("facilities")
@@ -87,6 +97,7 @@ def search(request):
     room_types = models.RoomType.objects.all()
     amenities = models.Amenity.objects.all()
     facilities = models.Facility.objects.all()
+
     choices = {
         "countries": countries,
         "room_types": room_types,
@@ -94,11 +105,56 @@ def search(request):
         "facilities": facilities,
     }
 
+    # 검색 기능 
+    filter_args = {}
+
+    if city != "Anywhere":
+        filter_args["city__startswith"] = city
+
+    filter_args["country"] = country
+
+    # 외래 키 참조하여 검색기능 생성!
+    if room_type != 0:
+        filter_args["room_type__pk"] = room_type
+    
+    if price != 0:
+        filter_args["price_lte"] = price
+
+    if guests != 0:
+        filter_args["guests__gte"] = guests
+    
+    if bedrooms != 0:
+        filter_args["bedrooms_gte"] = bedrooms
+    
+    if beds != 0:
+        filter_args["beds"] = beds
+
+    if baths != 0:
+        filter_args["baths__gte"] = baths
+    
+    if instant is True:
+        filter_args["instant_book"] = True
+    
+    if super_host is True:
+        filter_args["host__superhost"] = True
+
+    # 다대다 관계 검색 필터
+    if len(selected_amenities) > 0:
+        for s_amenity in selected_amenities:
+            filter_args["amenities__pk"] = int(s_amenity)
+
+    if len(selected_facilities) > 0:
+        for s_facility in selected_facilities:
+            filter_args["facilities__pk"] = int(s_facility)
+
+    rooms = models.Room.objects.filter(**filter_args)
+
     return render(
         request,
         "rooms/search.html",
-        {**form, **choices},
+        {**form, **choices, "rooms" : rooms},
     )
+    """
 
 
 # Function Based View
