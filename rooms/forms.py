@@ -2,7 +2,6 @@ from django import forms
 from django.http import request
 from django_countries.fields import CountryField
 from . import models
-from . import views
 
 
 class SearchForm(forms.Form):
