@@ -248,14 +248,15 @@ def room_detail(request, pk):
 
 """
     # paginator - 중간 단계에서의 코딩(Function Based View)
+
 def all_rooms(request):
     page = request.GET.get("page", 1)
     room_list = models.Room.objects.all()
     # paginator 객체 사용
     # orphans -> 마지막에 5개 이하로 남으면, 그냥 전 페이지에 모두 보여줘!
     paginator = Paginator(room_list, 10, orphans=5)
-    # get_page -> 페이지 수가 음수&초과이면 마지막 페이지 반환 -> 유연성
-    # page -> 페이지 수가 음수&초과이면 오류 발생시킴 -> 예외 처리에 유용
+    # get_page() -> 페이지 수가 음수&초과이면 마지막 페이지 반환 -> 유연성
+    # page() -> 페이지 수가 음수&초과이면 오류 발생시킴 -> 예외 처리에 유용
     try:
         page = paginator.page(int(page))
         return render(request, "rooms/home.html", {"page": page})
