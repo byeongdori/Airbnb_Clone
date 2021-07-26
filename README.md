@@ -149,4 +149,4 @@ Start 2021.07.04
 - include - 한 템플릿 안에 다른 템플릿 집어넣을수 있는 도구
 
 4. Form 만들기 / 검색 기능(필터) 생성 / nav.html
-- Django Forms API
+- Django Forms API -> forms.py 생성

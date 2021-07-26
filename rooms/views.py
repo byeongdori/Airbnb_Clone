@@ -1,8 +1,9 @@
+from django.core import paginator
 from django.db.models.base import ModelState
 from django.urls.base import reverse
 from django.http import Http404
 from django.utils import timezone
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View
 from django.shortcuts import render, redirect
 from django.core.paginator import EmptyPage, Paginator
 from django_countries import countries
@@ -54,16 +55,91 @@ class RoomDetail(DetailView):
     # 기본적으로 pk로 설정되어 있음, 바꾸고 싶을 때 변경
     pk_url_kwarg = "pk"
 
+# 장고 form API을 이용해 만든 방법
+class SearchView(View):
 
+    def get(self, request):
+        country = request.GET.get("country")
+        city = request.GET.get("city")
+
+        if country:
+            # 이미 한번 폼을 로드 한 경우
+            form = forms.SearchForm(request.GET)
+            if form.is_valid():
+                city = form.cleaned_data.get("city")
+                country = form.cleaned_data.get("country")
+                room_type = form.cleaned_data.get("room_type")
+                price = form.cleaned_data.get("price")
+                guests = form.cleaned_data.get("guests")
+                bedrooms = form.cleaned_data.get("bedrooms")
+                beds = form.cleaned_data.get("beds")
+                baths = form.cleaned_data.get("baths")
+                instant_book = form.cleaned_data.get("instant_book")
+                superhost = form.cleaned_data.get("super_host")
+                amenities = form.cleaned_data.get("amenities")
+                facilities = form.cleaned_data.get("facilities")
+
+                filter_args = {}
+
+                if city != "Anywhere":
+                    filter_args["city__startswith"] = city
+
+                filter_args["country"] = country
+
+                # 외래 키 참조하여 검색기능 생성!
+                if room_type is not None:
+                    filter_args["room_type"] = room_type
+
+                if price is not None:
+                    filter_args["price_lte"] = price
+
+                if guests is not None:
+                    filter_args["guests__gte"] = guests
+
+                if bedrooms is not None:
+                    filter_args["bedrooms_gte"] = bedrooms
+
+                if beds is not None:
+                    filter_args["beds"] = beds
+
+                if baths is not None:
+                    filter_args["baths__gte"] = baths
+
+                if instant_book is True:
+                    filter_args["instant_book"] = True
+
+                if superhost is True:
+                    filter_args["host__superhost"] = True
+
+                # 다대다 관계 검색 필터
+                for amenity in amenities:
+                    filter_args["amenities"] = int(amenity)
+
+                for facility in facilities:
+                    filter_args["facilities"] = int(facility)
+
+                queryset = models.Room.objects.filter(**filter_args).order_by("created")
+
+                paginator = Paginator(queryset, 10, orphans=5)
+
+                page = request.GET.get("page", 1)
+
+                rooms = paginator.get_page(page)
+
+                return render(request, "rooms/search.html", {"form": form, "rooms": rooms})
+        else:
+            # 초기 상태의 폼
+            form = forms.SearchForm()
+        
+        return render(request, "rooms/search.html", {"form": form})
+
+
+
+
+
+# Django Form 사용 안하고 만든 방법
+"""
 def search(request):
-
-    # Django Form 사용
-    form = forms.SearchForm()
-
-    return render(request, "rooms/search.html", {"form": form})
-
-    # Django Form 사용 안하고 만든 방법
-    """
     city = request.GET.get("city") or "Anywhere"
     city = str.capitalize(city)
     country = request.GET.get("country", "KR")
