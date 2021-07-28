@@ -148,7 +148,8 @@ Start 2021.07.04
 - block - 자식 템플릿이 부모 템플릿에게 content 집어넣을수 있는 도구
 - include - 한 템플릿 안에 다른 템플릿 집어넣을수 있는 도구
 
-4. Form 만들기 / 검색 기능(필터) 생성 / nav.html
+4. Form 만들기 / 검색 기능(필터) 생성 / nav.html / 유효성 검사
 
 - 다양한 Form 사용해 View 구성 가능
 - Django Forms API -> forms.py 생성
+- 기능에 맞는 View 사용하여 속성값 집어넣기
