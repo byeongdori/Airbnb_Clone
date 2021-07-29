@@ -27,11 +27,39 @@ class LoginView(FormView):
             login(self.request, user)
         return super().form_valid(form)
 
+
 def log_out(request):
     logout(request)
     return redirect(reverse("core:home"))
 
-# 단순 View 상속받아 만든 방법
+
+class SingUpView(FormView):
+
+    template_name = "users/signup.html"
+
+    form_class = forms.SignUpForm
+
+    success_url = reverse_lazy("core:home")
+
+    initial = {
+        "first_name": "Kim",
+        "last_name": "ByeongJu",
+        "email": "test@test.com",
+    }
+
+    # 회원가입이 됐다면 바로 로그인을 시킴
+    def form_valid(self, form):
+        print("ddd")
+        form.save()
+        email = form.cleaned_data.get("email")
+        password = form.cleaned_data.get("password")
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            print("dd")
+            login(self.request, user)
+        return super().form_valid(form)
+
+# 단순 View 상속받아 만든 로그인 방법
 """
 class LoginView(View):
 

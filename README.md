@@ -153,3 +153,4 @@ Start 2021.07.04
 - 다양한 Form 사용해 View 구성 가능
 - Django Forms API -> forms.py 생성
 - 기능에 맞는 View 사용하여 속성값 집어넣기
+- 로그인 / 회원가입
