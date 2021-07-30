@@ -1,5 +1,5 @@
 from django import forms
-from . import models
+from users import models
 
 
 class LoginForm(forms.Form):
@@ -24,6 +24,42 @@ class LoginForm(forms.Form):
             self.add_error("email", forms.ValidationError("User does not exist"))
 
 
+# ModelForm 사용하여 만든 코드
+# ModelForm -> 장고에서 Model과 Form을 연결시켜줌
+# ModelForm에는 기본적으로 save 메소드 있음!
+class SignUpForm(forms.ModelForm):
+
+    # Model에 있는 속성들 대입만 해주면 알아서 field 생성
+    class Meta:
+        model = models.User
+        fields = ("first_name", "last_name", "email")
+
+    password = forms.CharField(widget=forms.PasswordInput)
+    password_1 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+
+    def clean_password_1(self):
+        password = self.cleaned_data.get("password")
+        password_1 = self.cleaned_data.get("password_1")
+
+        if password != password_1:
+            raise forms.ValidationError("Password confirmation does not match")
+        else:
+            return password
+
+    # save 메소드 오버라이딩
+    def save(self, *args, **kwargs):
+        # username = self.cleaned_data.get("username")
+        # password = self.cleaned_data.get("password")
+        # commit = false -> 유저는 만들되 DB에 반영은 하지말아라
+        user = super().save(commit=False)
+        user.username = self.cleaned_data.get("email")
+        # 암호화된 패스워드 생성
+        user.set_password(self.cleaned_data.get("password"))
+        user.save()
+
+
+# ModelForm 사용하지 않고 만든 코드
+"""
 class SignUpForm(forms.Form):
 
     first_name = forms.CharField(max_length=80)
@@ -62,3 +98,4 @@ class SignUpForm(forms.Form):
         user.first_name = first_name
         user.last_name = last_name
         user.save()
+"""
