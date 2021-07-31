@@ -41,8 +41,9 @@ class CustomUserAdmin(UserAdmin):
         "superhost",
         "is_staff",
         "is_superuser",
+        "email_verified",
+        "email_secret",
     )
 
     # 리스트들을 특정 속성들로 필터링해서 보고 싶을 때 설정
     list_filter = UserAdmin.list_filter + ("superhost",)
-    

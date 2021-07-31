@@ -154,3 +154,4 @@ Start 2021.07.04
 - Django Forms API -> forms.py 생성
 - 기능에 맞는 View 사용하여 속성값 집어넣기
 - 로그인 / 회원가입
+- dotenv / 이메일 인증
