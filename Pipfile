@@ -9,6 +9,7 @@ django-countries = "*"
 django-seed = "*"
 django = "*"
 django-dotenv = "*"
+requests = "*"
 
 [dev-packages]
 flake8 = "*"

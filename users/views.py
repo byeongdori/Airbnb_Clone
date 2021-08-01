@@ -1,3 +1,5 @@
+import os
+import requests
 from users import models
 from django.views import View
 from django.views.generic import FormView
@@ -72,6 +74,23 @@ def complete_verification(request, key):
         pass
     return redirect(reverse("core:home"))
 
+# 깃허브를 통한 로그인
+def github_login(request):
+    client_id = os.environ.get("GH_ID")
+    redirect_uri = "http://127.0.0.1:8000/users/login/github/callback"
+    return redirect(
+        f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope==read:user"
+        )
+
+def github_callback(request):
+    client_id = os.environ.get("GH_ID")
+    client_secret = os.environ.get("GH_SECRET")
+    code = request.GET.get("code", None)
+    if code is not None:
+        request = requests.post(
+            f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
+            headers={"Accept": "application/json"}),
+    return redirect(reverse("core:home"))
 
 # 단순 View 상속받아 만든 로그인 방법
 """

@@ -25,11 +25,26 @@ class User(AbstractUser):  # AbstaractUser가 제공하는 속성 + 아래 속�
 
     LANGUAGE_ENGLISH = "EN"
     LANGUAGE_KOREAN = "KR"
-    LANGUAGE_CHOICES = ((LANGUAGE_ENGLISH, "English"), (LANGUAGE_KOREAN, "Korean"))
+    LANGUAGE_CHOICES = (
+        (LANGUAGE_ENGLISH, "English"),
+        (LANGUAGE_KOREAN, "Korean"),
+    )
 
     CURRNECY_USD = "usd"
     CURRENCY_KRW = "krw"
-    CURRENCY_CHOICES = ((CURRNECY_USD, "USD"), (CURRENCY_KRW, "KRW"))
+    CURRENCY_CHOICES = (
+        (CURRNECY_USD, "USD"),
+        (CURRENCY_KRW, "KRW"),
+    )
+
+    LOGIN_EMAIL = "email"
+    LOGIN_GITHUB = "github"
+    LOGIN_KAKAO = "kakao"
+    LOGIN_CHOICES = (
+        (LOGIN_EMAIL, "Email"),
+        (LOGIN_GITHUB, "Github"),
+        (LOGIN_KAKAO, "Kakao"),
+    )
 
     avatar = models.ImageField(upload_to="avatars", blank=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=10, blank=True)
@@ -47,7 +62,10 @@ class User(AbstractUser):  # AbstaractUser가 제공하는 속성 + 아래 속�
     email_verified = models.BooleanField(default=False)
     email_secret = models.CharField(max_length=120, default="")
 
-    # 인증 함수
+    # 로그인 방법
+    login_method = models.CharField(max_length=50, choices=LOGIN_CHOICES, default=LOGIN_EMAIL)
+    
+    # 이메일 인증 함수
     def verify_email(self):
         if self.email_verified is False:
             secret = uuid.uuid4().hex[:20]

@@ -24,6 +24,7 @@ class CustomUserAdmin(UserAdmin):
                     "language",
                     "currency",
                     "superhost",
+                    "login_method",
                 )
             },
         ),
@@ -43,6 +44,7 @@ class CustomUserAdmin(UserAdmin):
         "is_superuser",
         "email_verified",
         "email_secret",
+        "login_method",
     )
 
     # 리스트들을 특정 속성들로 필터링해서 보고 싶을 때 설정
