@@ -1,5 +1,6 @@
 import os
 import requests
+from requests.models import guess_filename
 from users import models
 from django.views import View
 from django.views.generic import FormView
@@ -61,6 +62,7 @@ class SingUpView(FormView):
         user.verify_email()
         return super().form_valid(form)
 
+
 # 이메일 인증
 def complete_verification(request, key):
     try:
@@ -74,23 +76,97 @@ def complete_verification(request, key):
         pass
     return redirect(reverse("core:home"))
 
+
 # 깃허브를 통한 로그인
 def github_login(request):
     client_id = os.environ.get("GH_ID")
     redirect_uri = "http://127.0.0.1:8000/users/login/github/callback"
     return redirect(
         f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope==read:user"
-        )
+    )
+
+
+class GithubException(Exception):
+    pass
+
 
 def github_callback(request):
-    client_id = os.environ.get("GH_ID")
-    client_secret = os.environ.get("GH_SECRET")
-    code = request.GET.get("code", None)
-    if code is not None:
-        request = requests.post(
-            f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
-            headers={"Accept": "application/json"}),
-    return redirect(reverse("core:home"))
+    try:
+        client_id = os.environ.get("GH_ID")
+        client_secret = os.environ.get("GH_SECRET")
+        code = request.GET.get("code", None)
+        if code is not None:
+            token_request = requests.post(
+                f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
+                headers={"Accept": "application/json"},
+            )
+            token_json = token_request.json()
+            error = token_json.get("error", None)
+            if error is not None:
+                raise GithubException()
+            else:
+                access_token = token_json.get("access_token")
+                profile_request = requests.get(
+                    "https://api.github.com/user",
+                    headers={
+                        "Authorization": f"token {access_token}",
+                        "Accept": "application/json",
+                    },
+                )
+                profile_json = profile_request.json()
+                username = profile_json.get("login", None)
+                if username is not None:
+                    name = profile_json.get("name")
+                    email = profile_json.get("email")
+                    bio = profile_json.get("bio")
+                    try:
+                        user = models.User.objects.get(email=email)
+                        if user.login_method != models.User.LOGIN_GITHUB:
+                            raise GithubException()
+                    except models.User.DoesNotExist:
+                        user = models.User.objects.create(
+                            email=email,
+                            first_name=name,
+                            username=email,
+                            bio=bio,
+                            login_method=models.User.LOGIN_GITHUB,
+                        )
+                        user.set_unusable_password()
+                        user.save()
+                    login(request, user)
+                    return redirect(reverse("core:home"))
+                else:
+                    raise GithubException()
+        else:
+            raise GithubException()
+    except GithubException:
+        # send error message
+        return redirect(reverse("users:login"))
+
+
+# 카카오 로그인
+def kakao_login(request):
+    client_id = os.environ.get("KAKAO_KEY")
+    redirect_uri = "https://127.0.0.1:8000/users/login/kakao/callback"
+    return redirect(
+        f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
+    )
+
+
+class KakaoException(Exception):
+    pass
+
+
+def kakao_callback(request):
+    try:
+        code = request.GET.get("code")
+        client_id = os.environ.get("KAKAO_KEY")
+        token_request = requests.get(
+            f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}"
+        )
+    except KakaoException:
+        return redirect(reverse("users:login"))
+
 
 # 단순 View 상속받아 만든 로그인 방법
 """
