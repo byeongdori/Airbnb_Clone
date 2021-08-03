@@ -1,5 +1,7 @@
 from django import forms
+from django.db.models import fields
 from users import models
+from django.contrib.auth.forms import UserCreationForm
 
 
 class LoginForm(forms.Form):
@@ -27,6 +29,7 @@ class LoginForm(forms.Form):
 # ModelForm 사용하여 만든 코드
 # ModelForm -> 장고에서 Model과 Form을 연결시켜줌
 # ModelForm에는 기본적으로 save 메소드 있음!
+# 이 외에도 UserCreationForm 사용해서도 가능!
 class SignUpForm(forms.ModelForm):
 
     # Model에 있는 속성들 대입만 해주면 알아서 field 생성
