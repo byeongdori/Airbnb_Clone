@@ -156,3 +156,7 @@ Start 2021.07.04
 - 로그인 / 회원가입
 - dotenv / 이메일 인증
 - OAuth를 이용한 깃허브 인증 / 카카오 인증
+
+## Tailwind Css
+
+- Node.js / Gulp setting
