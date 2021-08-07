@@ -1,9 +1,8 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 .search-box {
-  transition: box-shadow 0.5 linear;
+  transition: box-shadow 0.5s linear;
 }
 
 .nav_link {
@@ -12,3 +11,5 @@
     @apply py-10 px-5;
   }
 }
+
+@tailwind utilities;
