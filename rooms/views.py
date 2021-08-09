@@ -23,7 +23,7 @@ class HomeView(ListView):
     model = models.Room
 
     # 한 페이지에 몇개 보여줄꺼냐
-    paginate_by = 10
+    paginate_by = 12
 
     # 페이지 고아 설정
     paginate_orphans = 5
