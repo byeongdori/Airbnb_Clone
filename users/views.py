@@ -23,8 +23,6 @@ class LoginView(FormView):
     # reverse_lazy -> view는 로드 됐으나, url이 아직 로드되지 않을 때 사용
     success_url = reverse_lazy("core:home")
 
-    initial = {"email": "initial@initial.com"}
-
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
@@ -46,12 +44,6 @@ class SingUpView(FormView):
     form_class = forms.SignUpForm
 
     success_url = reverse_lazy("core:home")
-
-    initial = {
-        "first_name": "Kim",
-        "last_name": "ByeongJu",
-        "email": "test@test.com",
-    }
 
     # 회원가입이 됐다면 바로 로그인을 시킴
     def form_valid(self, form):

@@ -1,13 +1,16 @@
 from django import forms
 from django.db.models import fields
+from django.forms import widgets
 from users import models
 from django.contrib.auth.forms import UserCreationForm
 
 
 class LoginForm(forms.Form):
 
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Email"}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Password"})
+    )
 
     # clean_ 함수 -> 데이터 정리 -> clean_data 함수로 데이터 확인
     # email, password 유효성 검사 (서로 관련있기 때문에 하나의 검사함수로 묶음)
@@ -21,7 +24,7 @@ class LoginForm(forms.Form):
                 return self.cleaned_data
             else:
                 # add_error ->  어느 필드에서 온 에러인지 설정해서 출력
-                self.add_error("password", forms.ValidationError("Password is wrong"))
+                self.add_error(None, forms.ValidationError("Password is wrong"))
         except models.User.DoesNotExist:
             self.add_error("email", forms.ValidationError("User does not exist"))
 
@@ -36,9 +39,19 @@ class SignUpForm(forms.ModelForm):
     class Meta:
         model = models.User
         fields = ("first_name", "last_name", "email")
+        widgets = {
+            "first_name": forms.TextInput(attrs={"placeholder": "First name"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "Last name"}),
+            "email": forms.TextInput(attrs={"placeholder": "Email"}),
+        }
 
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_1 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Password"})
+    )
+    password_1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Confirm Password"}),
+        label="Confirm Password",
+    )
 
     def clean_password_1(self):
         password = self.cleaned_data.get("password")
