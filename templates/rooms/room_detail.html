@@ -9,7 +9,7 @@
     <h1> {{room.page_name}} </h1>
     <h3> {{room.description}} </h3>
 </div>
-    <h2> By: {{room.host.username}}
+    <h2> By: <a href="{{room.host.get_absoulte_url}}">{{room.host.username}}</a>
     {% if room.host.superhost %}
         (superhost)
     {% endif %}

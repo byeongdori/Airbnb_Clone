@@ -3,25 +3,25 @@ import requests
 from requests.models import guess_filename
 from users import models
 from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import PasswordChangeView
 from django.core.files.base import ContentFile
 from django.contrib.auth.forms import UserCreationForm
-from . import forms
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
+from . import forms, models, mixins
 
 # Create your views here.
 
 # FormView 사용하여 만드는 방법
-class LoginView(FormView):
+class LoginView(mixins.LoggedOutOnlyView, FormView):
 
     template_name = "users/login.html"
 
     form_class = forms.LoginForm
-
-    # reverse_lazy -> view는 로드 됐으나, url이 아직 로드되지 않을 때 사용
-    success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -31,13 +31,21 @@ class LoginView(FormView):
             login(self.request, user)
         return super().form_valid(form)
 
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        if next_arg is not None:
+            return next_arg
+        else:
+            return reverse("core:home")
+
 
 def log_out(request):
     logout(request)
+    messages.info(request, "See you later")
     return redirect(reverse("core:home"))
 
 
-class SingUpView(FormView):
+class SingUpView(mixins.LoggedOutOnlyView, FormView):
 
     template_name = "users/signup.html"
 
@@ -97,7 +105,7 @@ def github_callback(request):
             token_json = token_request.json()
             error = token_json.get("error", None)
             if error is not None:
-                raise GithubException()
+                raise GithubException("Can't get access token")
             else:
                 access_token = token_json.get("access_token")
                 profile_request = requests.get(
@@ -116,7 +124,9 @@ def github_callback(request):
                     try:
                         user = models.User.objects.get(email=email)
                         if user.login_method != models.User.LOGIN_GITHUB:
-                            raise GithubException()
+                            raise GithubException(
+                                f"Please log in with {user.login_method}"
+                            )
                     except models.User.DoesNotExist:
                         user = models.User.objects.create(
                             email=email,
@@ -129,13 +139,14 @@ def github_callback(request):
                         user.set_unusable_password()
                         user.save()
                     login(request, user)
+                    messages.success(request, f"Welcome back {user.first_name}")
                     return redirect(reverse("core:home"))
                 else:
-                    raise GithubException()
+                    raise GithubException("Can't get your profile")
         else:
-            raise GithubException()
-    except GithubException:
-        # send error message
+            raise GithubException("Can't get code")
+    except GithubException as Githuberror:
+        messages.error(request, Githuberror)
         return redirect(reverse("users:login"))
 
 
@@ -163,7 +174,7 @@ def kakao_callback(request):
         token_json = token_request.json()
         error = token_json.get("error", None)
         if error is not None:
-            raise KakaoException()
+            raise KakaoException("Can't get authorization code.")
         access_token = token_json.get("access_token")
         profile_request = requests.get(
             "https://kapi.kakao.com/v2/user/me",
@@ -174,14 +185,14 @@ def kakao_callback(request):
         print(properties)
         email = properties.get("email", None)
         if email is None:
-            raise KakaoException()
+            raise KakaoException("Please also give me your email")
         nickname = properties.get("profile").get("nickname")
         print(nickname)
         profile_image = properties.get("profile").get("profile_image_url")
         try:
             user = models.User.objects.get(email=email)
             if user.login_method != models.User.LOGIN_KAKAO:
-                raise KakaoException()
+                raise KakaoException(f"Please log in with {user.login_method}")
         except models.User.DoesNotExist:
             user = models.User.objects.create(
                 email=email,
@@ -198,9 +209,79 @@ def kakao_callback(request):
                     f"{nickname}_avatar", ContentFile(photo_request.content)
                 )
         login(request, user)
+        messages.success(request, f"Welcome back {user.first_name}")
         return redirect(reverse("core:home"))
-    except KakaoException:
+    except KakaoException as Kakaoerror:
+        messages.error(request, Kakaoerror)
         return redirect(reverse("users:login"))
+
+
+class UserProfileView(DetailView):
+
+    model = models.User
+
+    # 실제 로그인 한 유저가 아닌,
+    # 뷰에서 찾은 유저 객체 가리키는 이름
+    # user_detail.html 파일 참고
+    context_object_name = "user_obj"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["hello"] = "Hello!"
+        return context
+
+
+# 장고에서 제공하는 UpdateView 사용!
+class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
+
+    model = models.User
+    template_name = "users/update-profile.html"
+    fields = (
+        "first_name",
+        "last_name",
+        "gender",
+        "bio",
+        "birthdate",
+        "language",
+        "currency",
+    )
+    success_message = "Profile Updated"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
+        form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
+        form.fields["bio"].widget.attrs = {"placeholder": "Bio"}
+        form.fields["birthdate"].widget.attrs = {"placeholder": "Birthdate"}
+        form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
+        return form
+
+
+# 장고에서 제공하는 PasswordChangeView 사용!
+# mixins 순서 정렬 잘해야함!
+class UpdatePasswordView(
+    mixins.LoggedInOnlyView,
+    mixins.EmailLoginOnlyView,
+    SuccessMessageMixin,
+    PasswordChangeView,
+):
+
+    template_name = "users/update-password.html"
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["old_password"].widgets.attrs = {"placeholder": "Current password"}
+        form.fields["new_password1"].widgets.attrs = {"placeholder": "New password"}
+        form.fields["new_password2"].widgets.attrs = {
+            "placeholder": "Confirm new password"
+        }
+        return form
+
+    def get_success_url(self):
+        return self.request.user.get_absoulte_url()
 
 
 # 단순 View 상속받아 만든 로그인 방법

@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models.base import ModelState
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
+from django.shortcuts import reverse
 from django.template.loader import render_to_string
 
 # 장고 데이터베이스에 들어갈 model을 정의하는 파일 / 수정시 makemigration -> migrate 해야함!
@@ -46,6 +47,9 @@ class User(AbstractUser):  # AbstaractUser가 제공하는 속성 + 아래 속�
         (LOGIN_KAKAO, "Kakao"),
     )
 
+    first_name = models.CharField(
+        ("first name"), max_length=30, blank=True, default="Unnamed User"
+    )
     avatar = models.ImageField(upload_to="avatars", blank=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=10, blank=True)
     bio = models.TextField(default="", blank=True)
@@ -83,3 +87,6 @@ class User(AbstractUser):  # AbstaractUser가 제공하는 속성 + 아래 속�
             )
             self.save()
         return
+
+    def get_absolute_url(self):
+        return reverse("users:profile", kwargs={"pk": self.pk})

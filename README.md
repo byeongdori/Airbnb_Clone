@@ -162,3 +162,11 @@ Start 2021.07.04
 - Node.js / Gulp setting
 - Tailwind에서 제공하는 다양한 속성 사용하여 사이트 꾸미기
 - responsive design
+
+## Django messages framework
+
+##
+- form_vaild
+- get_absolute_url
+- get_form
+- mixins.py
