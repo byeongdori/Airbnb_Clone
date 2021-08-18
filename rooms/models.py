@@ -2,6 +2,7 @@ from enum import Flag
 from django.db import models
 from django.urls import reverse
 from django_countries.fields import CountryField
+from requests.models import ReadTimeoutError
 from core import models as core_models
 # Create your models here.
 
@@ -117,3 +118,7 @@ class Room(core_models.AbstractTimeStampedModel):
     def first_photo(self):
         photo, = self.photos.all()[:1]
         return photo.file.url
+
+    def get_next_four_photos(self):
+        photos = self.photos.all()[1:5]
+        return photos

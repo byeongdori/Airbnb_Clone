@@ -170,3 +170,5 @@ Start 2021.07.04
 - get_absolute_url
 - get_form
 - mixins.py
+
+- 비밀번호 변경 창 / room_detail

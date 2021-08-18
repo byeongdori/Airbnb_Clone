@@ -5,12 +5,16 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 
 
 class EmailLoginOnlyView(UserPassesTestMixin):
+
     def test_func(self):
+        print(self.request.user.login_method == "email")
         return self.request.user.login_method == "email"
 
     def handle_no_permission(self):
+        print(self.request.user.login_method == "email")
         messages.error(self.request, "Can't go there")
         return redirect("core:home")
+
 
 # 로그아웃 상태에서만 볼수 있는 mixins!
 class LoggedOutOnlyView(UserPassesTestMixin):
