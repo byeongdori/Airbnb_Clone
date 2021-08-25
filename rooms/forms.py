@@ -8,8 +8,6 @@ class SearchForm(forms.Form):
 
     # Django Form
 
-    
-
     city = forms.CharField(initial="Anywhere")
     country = CountryField(default="KR").formfield()
     room_type = forms.ModelChoiceField(
