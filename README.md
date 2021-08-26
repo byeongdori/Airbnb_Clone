@@ -171,4 +171,5 @@ Start 2021.07.04
 - get_form
 - mixins.py
 
-- 비밀번호 변경 창 
+## error
+- 비밀번호 변경 창 / 개인 프로필 디자인 -> user_avatar.html 매개변수 체크
