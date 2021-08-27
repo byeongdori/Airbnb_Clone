@@ -170,6 +170,7 @@ Start 2021.07.04
 - get_absolute_url
 - get_form
 - mixins.py
+- get_object
 
 ## error
-- 비밀번호 변경 창 / 개인 프로필 디자인 -> user_avatar.html 매개변수 체크
+- 비밀번호 변경 창 / 개인 프로필 디자인 -> user_avatar.html 매개변수 체크 / 검색 결과 창

@@ -3,10 +3,13 @@ from django.db.models.base import ModelState
 from django.urls.base import reverse
 from django.http import Http404
 from django.utils import timezone
-from django.views.generic import ListView, DetailView, View
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.views.generic import ListView, DetailView, View, UpdateView
 from django.shortcuts import render, redirect
 from django.core.paginator import EmptyPage, Paginator
 from django_countries import countries
+from users import mixins as user_mixins
 from . import models
 from . import forms
 
@@ -55,9 +58,9 @@ class RoomDetail(DetailView):
     # 기본적으로 pk로 설정되어 있음, 바꾸고 싶을 때 변경
     pk_url_kwarg = "pk"
 
+
 # 장고 form API을 이용해 만든 방법
 class SearchView(View):
-
     def get(self, request):
         country = request.GET.get("country")
         city = request.GET.get("city")
@@ -126,15 +129,14 @@ class SearchView(View):
 
                 rooms = paginator.get_page(page)
 
-                return render(request, "rooms/search.html", {"form": form, "rooms": rooms})
+                return render(
+                    request, "rooms/search.html", {"form": form, "rooms": rooms}
+                )
         else:
             # 초기 상태의 폼
             form = forms.SearchForm()
-        
+
         return render(request, "rooms/search.html", {"form": form})
-
-
-
 
 
 # Django Form 사용 안하고 만든 방법
@@ -290,3 +292,64 @@ def all_rooms(request):
         },
     )
 """
+
+
+class EditRoomView(user_mixins.LoggedInOnlyView, UpdateView):
+
+    model = models.Room
+
+    template_name = "rooms/room_edit.html"
+
+    # 뭘 수정할 것인지 필드 설정
+    fields = (
+        "name",
+        "description",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+        "instant_book",
+        "room_type",
+        "amenities",
+        "facilities",
+        "house_rules",
+    )
+
+    def get_object(self, queryset=None):
+        room = super().get_object(queryset=queryset)
+        if room.host.pk != self.request.user.pk:
+            raise Http404()
+        return room
+
+class RoomPhotosView(user_mixins.LoggedInOnlyView, RoomDetail):
+
+    model = models.Room
+
+    template_name = "rooms/room_photos.html"
+
+    def get_object(self, queryset=None):
+        room = super().get_object(queryset=queryset)
+        if room.host.pk != self.request.user.pk:
+            raise Http404()
+        return room
+
+@login_required
+def delete_photo(request, room_pk, photo_pk):
+    user = request.user
+    try:
+        room = models.Room.objects.get(pk=room_pk)
+        if room.host.pk != user.pk:
+            messages.error(request, "Can't delete that Photo")
+        else:
+            # 사진 삭제
+            models.Photo.objects.filter(pk=photo_pk).delete()
+            messages.success(request, "Photo Deleted")
+        return redirect(reverse("rooms:photos", kwargs={"pk": room_pk}))
+    except models.Room.DoesNotExist:
+        return redirect(reverse("core:home"))
