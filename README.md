@@ -166,11 +166,15 @@ Start 2021.07.04
 ## Django messages framework
 
 ##
+- form.py
 - form_vaild
 - get_absolute_url
 - get_form
 - mixins.py
 - get_object
+- session
 
 ## error
 - 비밀번호 변경 창 / 개인 프로필 디자인 -> user_avatar.html 매개변수 체크 / 검색 결과 창
+
+23.8

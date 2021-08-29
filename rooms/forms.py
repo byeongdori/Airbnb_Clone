@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import fields
 from django.http import request
 from django_countries.fields import CountryField
 from . import models
@@ -30,3 +31,19 @@ class SearchForm(forms.Form):
         queryset=models.Facility.objects.all(),
         widget=forms.CheckboxSelectMultiple,
     )
+
+
+class CreatePhotoForm(forms.ModelForm):
+    class Meta:
+        model = models.Photo
+        fields = (
+            "caption",
+            "file",
+        )
+    
+    # 새로 저장될 사진과 방 연결
+    def save(self, pk, *args, **kwargs):
+        photo = super().save(commit=False)
+        room = models.Room.objects.get(pk=pk)
+        photo.room = room
+        photo.save()

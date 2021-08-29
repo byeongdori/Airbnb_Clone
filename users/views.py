@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import PasswordChangeView
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
@@ -311,3 +312,12 @@ def log_out(request):
     logout(request)
     return redirect(reverse("core:home"))
 """
+
+# 호스트인지 게스트인지 구분하여 사이트 보여주기 위한 함수
+@login_required
+def switch_hosting(request):
+    try:
+        del request.session["is_hosting"]
+    except KeyError:
+        request.session["is_hosting"] = True
+    return redirect(reverse("core:home"))
