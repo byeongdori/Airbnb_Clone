@@ -173,8 +173,12 @@ Start 2021.07.04
 - mixins.py
 - get_object
 - session
+- save method interception
 
 ## error
-- 비밀번호 변경 창 / 개인 프로필 디자인 -> user_avatar.html 매개변수 체크 / 검색 결과 창
+- 비밀번호 변경 창
+- 개인 프로필 디자인 -> 아바타 없는데 있다고 나옴 / 삭제 잘못했나
+- 검색 결과 창
+- Create Room 입력 창, 방 생성
 
 23.8

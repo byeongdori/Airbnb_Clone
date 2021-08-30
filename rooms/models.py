@@ -116,8 +116,12 @@ class Room(core_models.AbstractTimeStampedModel):
         return 0
 
     def first_photo(self):
-        photo, = self.photos.all()[:1]
-        return photo.file.url
+        try:
+            photo, = self.photos.all()[:1]
+            return photo.file.url
+        except ValueError:
+            # 사진이 없는 경우
+            return None
 
     def get_next_four_photos(self):
         photos = self.photos.all()[1:5]

@@ -42,8 +42,37 @@ class CreatePhotoForm(forms.ModelForm):
         )
     
     # 새로 저장될 사진과 방 연결
+    # commit = False -> Object는 생성하지만 DB에 넣지는 않음
     def save(self, pk, *args, **kwargs):
         photo = super().save(commit=False)
         room = models.Room.objects.get(pk=pk)
         photo.room = room
         photo.save()
+
+class CreateRoomForm(forms.ModelForm):
+    class Meta:
+        model = models.Room
+        fields = (
+        "name",
+        "description",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+        "instant_book",
+        "room_type",
+        "amenities",
+        "facilities",
+        "house_rules",
+        )
+
+    # save method Override
+    def save(self, *args, **kwargs):
+        room = super().save(commit=False)
+        room.save()
