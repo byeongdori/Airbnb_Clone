@@ -4,6 +4,7 @@ from django.urls import reverse
 from django_countries.fields import CountryField
 from requests.models import ReadTimeoutError
 from core import models as core_models
+from cal import Calendar, calendar
 # Create your models here.
 
 
@@ -126,3 +127,8 @@ class Room(core_models.AbstractTimeStampedModel):
     def get_next_four_photos(self):
         photos = self.photos.all()[1:5]
         return photos
+    
+    def get_calenders(self):
+        calendar = Calendar(2019, 11)
+        print(calendar.get_month())
+        return False
