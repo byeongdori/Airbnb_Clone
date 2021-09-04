@@ -1,4 +1,13 @@
+from django.utils import timezone
 import calendar
+
+class Day():
+    def __init__(self, number, past):
+        self.number = number
+        self.past = past
+    
+    def __str__(self):
+        return self.number
 
 class Calendar(calendar.Calendar):
 
@@ -30,7 +39,15 @@ class Calendar(calendar.Calendar):
         for week in weeks:
             for day, _ in week:
                 # week tuple을 Unpacking 하는 과정, 첫번째 원소인 day만 뽑아냄
-                days.append(day)
+                now = timezone.now()
+                today = now.day
+                month = now.month
+                past = False
+                if month == self.month:
+                    if day <= today:
+                        past = True
+                new_day = Day(day, past)
+                days.append(new_day)
         return days 
 
     def get_month(self):
