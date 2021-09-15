@@ -18,5 +18,8 @@
     "gulp-sass": "^5.0.0",
     "node-sass": "^6.0.1",
     "tailwindcss": "^2.2.7"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0"
   }
 }

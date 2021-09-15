@@ -1,10 +1,9 @@
-from datetime import date, datetime
+from datetime import datetime, timedelta
 from django.db import models
 from django.utils import timezone
 from core import models as core_models
 
 # Create your models here.
-
 
 class BookedDay(core_models.AbstractTimeStampedModel):
 
@@ -14,6 +13,9 @@ class BookedDay(core_models.AbstractTimeStampedModel):
     class Meta:
         verbose_name = "Booked Day"
         verbose_name_plural = "Booked Days"
+    
+    def __str__(self):
+        return str(self.day)
 
 
 class Reservation(core_models.AbstractTimeStampedModel):
@@ -69,7 +71,7 @@ class Reservation(core_models.AbstractTimeStampedModel):
             if not existing_booked_day:
                 super().save(*args, **kwargs)
                 for i in range(difference.days + 1):
-                    day = start + datetime.timedelta(days=i)
+                    day = start + timedelta(days=i)
                     BookedDay.objects.create(day=day, reservation=self)
                 return
         else:
