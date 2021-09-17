@@ -175,6 +175,7 @@ Start 2021.07.04
 - session
 - save method interception
 - Custom Template Filter / Tag
+- Model Managers
 
 ## error
 - 비밀번호 변경 창
@@ -182,4 +183,4 @@ Start 2021.07.04
 - 검색 결과 창
 - Create Room 입력 창, 방 생성
 
-24.10
+24.11
