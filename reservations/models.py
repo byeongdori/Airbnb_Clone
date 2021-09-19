@@ -57,7 +57,10 @@ class Reservation(core_models.AbstractTimeStampedModel):
 
     def is_finished(self):
         now = timezone.now().date()
-        return now > self.check_out
+        is_finished = now > self.check_out
+        if is_finished:
+            BookedDay.objects.filter(reservation=self).delete()
+        return is_finished
 
     is_finished.boolean = True
 
@@ -76,6 +79,4 @@ class Reservation(core_models.AbstractTimeStampedModel):
                     day = start + timedelta(days=i)
                     BookedDay.objects.create(day=day, reservation=self)
                 return
-        else:
-            # 이미 있는 예약인 다시 저장한 경우
-            return super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
