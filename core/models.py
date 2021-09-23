@@ -1,4 +1,5 @@
 from django.db import models
+from . import managers
 
 # Create your models here.
 # User app을 제외한 다른 app들은 이 Core app을 확장하여 사용
@@ -9,7 +10,8 @@ class AbstractTimeStampedModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # auto_now_add -> 생성 날짜 기록 // auto_now -> 업데이트 날짜 기록
-
+    objects = managers.CustomModelManager()
+    
     class Meta:
         abstract = True
 

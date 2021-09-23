@@ -35,3 +35,7 @@ class Review(core_models.AbstractTimeStampedModel):
             + self.value
         ) / 6
         return round(avg, 2)
+
+    class Meta:
+        # 순서 정렬을 위한 속성, -created -> 최신순
+        ordering = ("-created",)
