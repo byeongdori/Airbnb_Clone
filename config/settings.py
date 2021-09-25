@@ -158,9 +158,13 @@ MEDIA_URL = "/media/"
 EMAIL_HOST = "smtp.mailgun.org"
 EMAIL_POST = "587"
 EMAIL_HOST_USER = os.environ.get("MAILGUN_USERNAME")
-EMAIL_HOST_PASSWORD = os.environ.get("MAILGUN_PASSWORD") 
+EMAIL_HOST_PASSWORD = os.environ.get("MAILGUN_PASSWORD")
 EMAIL_FROM = "airbnb_verify@sandbox5befc2e4b3dd4e5e8914d1039ecc6152.mailgun.org"
 
 # Auth
 
 LOGIN_URL = "/users/login"
+
+# Locale
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)

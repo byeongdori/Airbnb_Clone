@@ -10,6 +10,7 @@ django-seed = "*"
 django = "*"
 django-dotenv = "*"
 requests = "*"
+brew = "*"
 
 [dev-packages]
 flake8 = "*"

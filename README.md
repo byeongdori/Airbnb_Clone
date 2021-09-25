@@ -177,6 +177,7 @@ Start 2021.07.04
 - Custom Template Filter / Tag
 - Model Managers
 - Validator -> form & model 둘다 유효성 검사해라
+- translation framework
 
 ## error
 - 비밀번호 변경 창
@@ -184,4 +185,4 @@ Start 2021.07.04
 - 검색 결과 창
 - Create Room 입력 창, 방 생성
 
-25.0
+25.1
