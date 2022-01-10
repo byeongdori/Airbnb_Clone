@@ -6,7 +6,7 @@ Start 2021.07.04
 
 ## TOPIC
   - dd
-  
+  - <a href="https://github.com/byeongdori/Airbnb_Clone/blob/master/STUDY.md"> 장고학습 내용 정리한 파일 </a>
 ## 구현한 기능
   - Users
     - User Authentication
