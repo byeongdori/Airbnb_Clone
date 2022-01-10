@@ -6,6 +6,7 @@ from django_countries.fields import CountryField
 from requests.models import ReadTimeoutError
 from core import models as core_models
 from cal import Calendar, calendar
+
 # Create your models here.
 
 
@@ -90,7 +91,9 @@ class Room(core_models.AbstractTimeStampedModel):
     )
     # ForeignKey 이용하여 User model 과 연결, 일대다 관계
     # on_delete=models.CASCADE -> room 과 연결된 User가 삭제되면, room도 같이 삭제해라
-    room_type = models.ForeignKey(RoomType, related_name="rooms",on_delete=models.SET_NULL, null=True)
+    room_type = models.ForeignKey(
+        RoomType, related_name="rooms", on_delete=models.SET_NULL, null=True
+    )
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     facilities = models.ManyToManyField(Facility, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
@@ -102,11 +105,11 @@ class Room(core_models.AbstractTimeStampedModel):
     # 이 save 메소드는 어드민에서 모델 건드릴 때 뿐만 아니라, 어딘가에서 건드릴 때 항상 일어남!
     def save(self, *args, **kwargs):
         self.city = str.capitalize(self.city)
-        super().save(*args, **kwargs) # Call the real save() method    
-    
+        super().save(*args, **kwargs)  # Call the real save() method
+
     # Url 추적해주는 함수
     def get_absolute_url(self):
-        return reverse("rooms:detail", kwargs={"pk" : self.pk})
+        return reverse("rooms:detail", kwargs={"pk": self.pk})
 
     def total_rating(self):
         all_reviews = self.reviews.all()
@@ -119,7 +122,7 @@ class Room(core_models.AbstractTimeStampedModel):
 
     def first_photo(self):
         try:
-            photo, = self.photos.all()[:1]
+            (photo,) = self.photos.all()[:1]
             return photo.file.url
         except ValueError:
             # 사진이 없는 경우
@@ -128,7 +131,7 @@ class Room(core_models.AbstractTimeStampedModel):
     def get_next_four_photos(self):
         photos = self.photos.all()[1:5]
         return photos
-    
+
     def get_calendars(self):
         now = timezone.now()
         this_year = now.year
