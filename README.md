@@ -2,8 +2,8 @@
 
 Cloning Airbnb with Python, Django, Tailwind and more..
 
-Start 2021.07.04
-end 2021.09.10
+Start 2021.07.04  
+End 2021.09.10
 
 ## 구현한 기능 & TOPIC
   - <a href="https://github.com/byeongdori/Airbnb_Clone/blob/master/STUDY.md"> 장고학습 내용 정리한 파일 </a>
